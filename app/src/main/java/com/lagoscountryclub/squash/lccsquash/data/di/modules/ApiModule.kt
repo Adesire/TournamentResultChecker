@@ -1,6 +1,8 @@
 package com.lagoscountryclub.squash.lccsquash.data.di.modules
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.GameApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.PlayerApiService
+import com.lagoscountryclub.squash.lccsquash.data.remote.TournamentApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -41,6 +43,16 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideAuthApiService(retrofit: Retrofit): PlayerApiService =
+    fun providePlayerApiService(retrofit: Retrofit): PlayerApiService =
         retrofit.create(PlayerApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGameApiService(retrofit: Retrofit): GameApiService =
+        retrofit.create(GameApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTournamentApiService(retrofit: Retrofit): TournamentApiService =
+        retrofit.create(TournamentApiService::class.java)
 }

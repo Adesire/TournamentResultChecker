@@ -1,9 +1,9 @@
 package com.lagoscountryclub.squash.lccsquash.data.remote.api.response
 
-data class PlayerResponse(
+data class TournamentResponse(
     val id: Long,
     val name: String,
-    val points: Int,
-    val gamesPlayed: Int,
-    val games: List<GameResponse>
+    val year: String,
+    val totalGameCount: Int,
+    val bestOfCount: Int
 )

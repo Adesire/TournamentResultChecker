@@ -1,3 +1,3 @@
 package com.lagoscountryclub.squash.lccsquash.domain.model
 
-data class Player(val id: Long, val name: String)
+data class Game(val id: Long)

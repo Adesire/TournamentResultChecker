@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "LccSquashTournament"
-include ':app'
+include (":app")
