@@ -50,23 +50,27 @@ android {
 
 dependencies {
 
-    val compose_ui_version = "1.2.0"
+    val composeUiVersion = "1.2.0"
 
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation ("androidx.activity:activity-compose:1.3.1")
-    implementation ("androidx.compose.ui:ui:$compose_ui_version")
-    implementation ("androidx.compose.ui:ui-tooling-preview:$compose_ui_version")
+    implementation ("androidx.compose.ui:ui:$composeUiVersion")
+    implementation ("androidx.compose.ui:ui-tooling-preview:$composeUiVersion")
     implementation ("androidx.compose.material:material:1.2.0")
     testImplementation ("junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$compose_ui_version")
-    debugImplementation ("androidx.compose.ui:ui-tooling:$compose_ui_version")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest:$compose_ui_version")
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$composeUiVersion")
+    debugImplementation ("androidx.compose.ui:ui-tooling:$composeUiVersion")
+    debugImplementation ("androidx.compose.ui:ui-test-manifest:$composeUiVersion")
+    // Animations
+    implementation ("androidx.compose.animation:animation:1.3.2")
+    // Integration with ViewModels
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
     //Timber
-    implementation ("com.jakewharton.timber:timber:4.7.1")
+    implementation ("com.jakewharton.timber:timber:5.0.1")
     //SharedPrefs
     implementation ("com.pixplicity.easyprefs:EasyPrefs:1.10.0")
     //RETROFIT
@@ -84,4 +88,10 @@ dependencies {
     kapt ("com.google.dagger:hilt-android-compiler:2.42")
     //JodaTime
     implementation ("joda-time:joda-time:2.10.9")
+    //Testing
+    testImplementation ("io.mockk:mockk:1.13.5")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    androidTestImplementation ("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
+
 }
