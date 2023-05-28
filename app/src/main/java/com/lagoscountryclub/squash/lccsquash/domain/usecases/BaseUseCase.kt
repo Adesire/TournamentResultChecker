@@ -13,17 +13,22 @@ abstract class BaseUseCase {
 
     protected val coroutineContext = Dispatchers.IO
     lateinit var onError: (message: String?) -> Unit
+    lateinit var onLoading: (loading: Boolean) -> Unit
 
     private fun <T> parseResource(resource: Resource<T>, result: (response: T) -> Unit) {
+        onLoading.invoke(true)
         when (resource) {
             is Success -> {
+                onLoading.invoke(false)
                 result.invoke(resource.data)
             }
             is HttpError -> {
+                onLoading.invoke(false)
                 logError("HttpError")
                 onError.invoke(resource.message)
             }
             is NetworkError -> {
+                onLoading.invoke(false)
                 logError("Network Error")
                 onError.invoke("Network Error")
             }

@@ -5,5 +5,6 @@ data class PlayerResponse(
     val name: String,
     val points: Int,
     val gamesPlayed: Int,
+    val tournamentName: String,
     val games: List<GameResponse>
 )

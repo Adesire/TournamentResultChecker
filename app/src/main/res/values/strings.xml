@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">LccSquashTournament</string>
+    <string name="app_name">Tournament</string>
+    <string name="person_icon">Person</string>
 </resources>

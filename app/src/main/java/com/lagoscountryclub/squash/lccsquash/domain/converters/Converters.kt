@@ -13,13 +13,28 @@ fun PlayersResponse.toPlayer(): Player {
 }
 
 fun PlayerResponse.toPlayer(): Player {
-    return Player(id = this.id, name = this.name)
+    return Player(
+        id = this.id,
+        name = this.name,
+        points = this.points,
+        gamesPlayed = this.gamesPlayed,
+        tournamentName = this.tournamentName,
+        games = this.games.map { it.toGame() }
+    )
 }
 
 fun GameResponse.toGame(): Game {
-    return Game(id = this.id)
+    return Game(
+        id = this.id,
+        player1 = this.player1.toPlayer(),
+        player2 = this.player2.toPlayer(),
+        player1Point = this.player1Points,
+        player2Point = this.player2Points,
+        record = this.roundRecords,
+        scores = this.roundScores
+    )
 }
 
 fun TournamentResponse.toTournament(): Tournament {
-    return Tournament(id = this.id)
+    return Tournament(id = this.id, name = this.name)
 }

@@ -1,8 +1,8 @@
 plugins {
     id ("com.android.application")
     id ("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
+    kotlin ("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -51,6 +51,7 @@ android {
 dependencies {
 
     val composeUiVersion = "1.2.0"
+    val navVersion = "2.5.1"
 
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
@@ -68,6 +69,10 @@ dependencies {
     implementation ("androidx.compose.animation:animation:1.3.2")
     // Integration with ViewModels
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    //Navigation
+    implementation ("androidx.navigation:navigation-compose:$navVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.3.2")
 
     //Timber
     implementation ("com.jakewharton.timber:timber:5.0.1")

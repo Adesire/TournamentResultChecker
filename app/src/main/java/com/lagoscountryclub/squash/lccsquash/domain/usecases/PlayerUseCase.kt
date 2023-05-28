@@ -18,7 +18,7 @@ class PlayerUseCase @Inject constructor(
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
-    fun getPlayer(id: Long, tournament: Long, onSuccess: (players: Player) -> Unit) = flow {
+    fun getPlayer(id: Long, tournament: Long?, onSuccess: (players: Player) -> Unit) = flow {
         emit(playerApiRepository.getPlayer(id, tournament))
     }.evaluateOnEach {
         onSuccess.invoke(it)

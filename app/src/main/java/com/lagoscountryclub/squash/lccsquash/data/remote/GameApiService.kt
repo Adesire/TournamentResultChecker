@@ -9,10 +9,10 @@ import retrofit2.http.Query
 interface GameApiService {
 
     @GET(ALL)
-    fun getAllGames(@Query("tournament") tournament: Long?): SuccessResponse<List<GameResponse>>
+    suspend fun getAllGames(@Query("tournament") tournament: Long?): SuccessResponse<List<GameResponse>>
 
     @GET(GAME)
-    fun getAGame(
+    suspend fun getAGame(
         @Path("id") id: Long,
         @Query("tournament") tournament: Long?
     ): SuccessResponse<GameResponse>

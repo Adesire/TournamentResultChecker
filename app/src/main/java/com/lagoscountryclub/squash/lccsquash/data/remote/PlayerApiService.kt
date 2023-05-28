@@ -11,26 +11,26 @@ import retrofit2.http.Query
 interface PlayerApiService {
 
     @GET(ALL)
-    fun getAllPlayers(): SuccessResponse<List<PlayersResponse>>
+    suspend fun getAllPlayers(): SuccessResponse<List<PlayersResponse>>
 
     @GET(PLAYER)
-    fun getPlayer(
+    suspend fun getPlayer(
         @Path("id") id: Long,
         @Query("tournament") tournament: Long?
     ): SuccessResponse<PlayerResponse>
 
     @GET(TOP_30)
-    fun getTop30Players(
+    suspend fun getTop30Players(
         @Query("tournament") tournament: Long?
     ): SuccessResponse<List<PlayerResponse>>
 
     @GET(MOST_PLAYED)
-    fun getMostPlayed(
+    suspend fun getMostPlayed(
         @Query("tournament") tournament: Long
     ): SuccessResponse<List<PlayerResponse>>
 
     @POST(SEARCH)
-    fun searchPlayers(
+    suspend fun searchPlayers(
         @Query("name") name: String
     ): SuccessResponse<List<PlayersResponse>>
 
