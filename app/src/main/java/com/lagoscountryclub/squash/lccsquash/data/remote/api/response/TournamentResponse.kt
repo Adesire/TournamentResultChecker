@@ -5,5 +5,6 @@ data class TournamentResponse(
     val name: String,
     val year: String,
     val totalGameCount: Int,
-    val bestOfCount: Int
+    val bestOfCount: Int,
+    val rules: List<String>
 )

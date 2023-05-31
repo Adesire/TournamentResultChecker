@@ -36,5 +36,12 @@ fun GameResponse.toGame(): Game {
 }
 
 fun TournamentResponse.toTournament(): Tournament {
-    return Tournament(id = this.id, name = this.name)
+    return Tournament(
+        id = this.id,
+        name = this.name,
+        year = this.year,
+        gameCount = this.totalGameCount,
+        bestOfCount = this.bestOfCount,
+        rules = this.rules
+    )
 }

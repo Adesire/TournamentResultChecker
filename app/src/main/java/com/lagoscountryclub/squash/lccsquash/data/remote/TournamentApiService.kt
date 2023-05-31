@@ -14,7 +14,7 @@ interface TournamentApiService {
 
     @GET(TOURNAMENT)
     suspend fun getATournament(
-        @Path("id") id: Long
+        @Path("id") id: Long = 0
     ): SuccessResponse<TournamentResponse>
 
     @POST(SEARCH)

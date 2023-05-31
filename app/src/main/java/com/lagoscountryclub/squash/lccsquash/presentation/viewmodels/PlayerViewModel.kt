@@ -48,7 +48,7 @@ class PlayerViewModel @Inject constructor(private val useCase: PlayerUseCase) : 
         getAllPlayers()
     }
 
-    private fun getAllPlayers() {
+    fun getAllPlayers() {
         useCase.getAllPlayers {
             _players.value = it
         }.launchIn(viewModelScope)

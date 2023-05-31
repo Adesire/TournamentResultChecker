@@ -31,7 +31,7 @@ class TournamentUseCase @Inject constructor(
             emit(tournamentApiRepository.searchTournament(keywords))
         }.evaluateOnEach(onSuccess::invoke).flowOn(coroutineContext)
 
-    fun getTournament(id: Long, onSuccess: (tournament: Tournament) -> Unit) = flow {
-        emit(tournamentApiRepository.getTournament(id))
+    fun getTournament(id: Long?, onSuccess: (tournament: Tournament) -> Unit) = flow {
+        emit(tournamentApiRepository.getTournament(id?:0))
     }.evaluateOnEach(onSuccess::invoke).flowOn(coroutineContext)
 }

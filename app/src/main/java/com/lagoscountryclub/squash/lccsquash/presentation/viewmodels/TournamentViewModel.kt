@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.lagoscountryclub.squash.lccsquash.domain.model.Player
 import com.lagoscountryclub.squash.lccsquash.domain.model.Tournament
 import com.lagoscountryclub.squash.lccsquash.domain.usecases.TournamentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,10 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
     private val _tournament = mutableStateOf(Tournament())
     val tournament: State<Tournament>
         get() = _tournament
+
+    private val _players = mutableStateListOf<Player>()
+    val players: List<Player>
+        get() = _players
 
     init {
         useCase.onLoading = ::setLoading
@@ -40,9 +45,16 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
         }.launchIn(viewModelScope)
     }
 
-    fun getTournament(id: Long) {
+    fun getTournament(id: Long? = null) {
         useCase.getTournament(id) {
             _tournament.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    fun getTop30(id: Long? = null) {
+        useCase.getTop30Players(id) {
+            _players.clear()
+            _players.addAll(it)
         }.launchIn(viewModelScope)
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,8 +36,9 @@ fun TournamentDialog(
     Dialog(onDismissRequest = { OnDismiss.invoke() }, DialogProperties()) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
+                .background(color = MaterialTheme.colors.surface),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +82,11 @@ fun TournamentDialogPreview() {
 }
 
 val dummyTournaments = listOf(
-    Tournament(id = 0, name = "Ladder 2021"),
-    Tournament(id = 0, name = "Ladder 2022"),
-    Tournament(id = 0, name = "Ladder 2023")
+    Tournament(
+        id = 0,
+        name = "Ladder 2021",
+        rules = listOf("thou shalt A", "thou shalt B", "thou shalt not C")
+    ),
+    Tournament(id = 1, name = "Ladder 2022"),
+    Tournament(id = 2, name = "Ladder 2023")
 )

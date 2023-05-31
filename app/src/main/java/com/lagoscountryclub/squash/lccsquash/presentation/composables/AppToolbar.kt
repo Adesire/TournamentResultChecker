@@ -3,15 +3,14 @@ package com.lagoscountryclub.squash.lccsquash.presentation.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +28,7 @@ fun AppToolbar(
     OnBackPressed: () -> Unit = {},
     OnMorePressed: () -> Unit = {}
 ) {
+    val menuShowing = remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -57,12 +57,22 @@ fun AppToolbar(
         },
         actions = {
             Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.wrapContentSize()) {
-                IconButton(onClick = OnMorePressed, modifier = Modifier) {
+                IconButton(onClick = {
+                    OnMorePressed.invoke()
+                    menuShowing.value = !menuShowing.value
+                }, modifier = Modifier) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = "More",
                         tint = Color.White
                     )
+                }
+
+                DropdownMenu(expanded = menuShowing.value, onDismissRequest = { menuShowing.value = false }) {
+                    Text(text = "All Tournaments", modifier = Modifier.clickable {
+                        OnTitlePressed.invoke()
+                        menuShowing.value = false
+                    }.padding(8.dp))
                 }
             }
         }

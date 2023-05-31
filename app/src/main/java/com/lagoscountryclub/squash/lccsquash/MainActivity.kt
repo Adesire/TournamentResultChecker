@@ -13,8 +13,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.lagoscountryclub.squash.lccsquash.presentation.MainScreen
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.AppToolbar
+import com.lagoscountryclub.squash.lccsquash.presentation.composables.bottomnav.BottomNav
 import com.lagoscountryclub.squash.lccsquash.ui.theme.LccSquashTournamentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,18 +34,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainApp(appTitle: String = "") {
+    val navController = rememberNavController()
+
     val showToolbar = remember { mutableStateOf(true) }
-    val title = remember {
-        mutableStateOf(appTitle)
-    }
-    val onTitlePressed = remember {
-        mutableStateOf(false)
-    }
+    val showBottomNav = remember { mutableStateOf(true) }
+    val title = remember { mutableStateOf(appTitle) }
+    val onTitlePressed = remember { mutableStateOf(false) }
+
     Scaffold(topBar = {
         if (showToolbar.value) {
             AppToolbar(title = title.value, OnTitlePressed = {
                 onTitlePressed.value = true
             })
+        }
+    }, bottomBar = {
+        if (showBottomNav.value) {
+            BottomNav(navController)
         }
     }) {// A surface container using the 'background' color from the theme
         Surface(
@@ -52,11 +58,16 @@ fun MainApp(appTitle: String = "") {
                 .padding(it),
             color = MaterialTheme.colors.background
         ) {
-            MainScreen(showToolbar = { show ->
-                showToolbar.value = show
-            }, onTitlePressed = onTitlePressed, tournament = { tournament ->
-                title.value = tournament.name
-            })
+            MainScreen(
+                navController = navController,
+                showToolbar = { show ->
+                    showToolbar.value = show
+                },
+                showBottomNav = { show ->
+                    showBottomNav.value = show
+                }, onTitlePressed = onTitlePressed, tournament = { tournament ->
+                    title.value = tournament.name
+                })
         }
     }
 }
