@@ -5,6 +5,7 @@ import com.lagoscountryclub.squash.lccsquash.data.HttpError
 import com.lagoscountryclub.squash.lccsquash.data.NetworkError
 import com.lagoscountryclub.squash.lccsquash.data.Resource
 import com.lagoscountryclub.squash.lccsquash.data.Success
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.ErrorResponse
 import kotlinx.coroutines.CancellationException
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -19,7 +20,7 @@ suspend fun <T> makeRepositoryRequest(req: suspend () -> T): Resource<T> = try {
         is IOException -> NetworkError
         is HttpException -> {
             val message = if (e.code() == 404) "The current request is not defined by this API."
-            else e.getResponse<Any>(Gson()).toString()
+            else e.getResponse<ErrorResponse>(Gson()).message
             Timber.e("${e.getResponse<Any>(Gson())}")
             HttpError(e.code(), message)
         }
