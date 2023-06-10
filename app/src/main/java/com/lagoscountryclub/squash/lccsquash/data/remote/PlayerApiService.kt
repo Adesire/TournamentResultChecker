@@ -1,12 +1,10 @@
 package com.lagoscountryclub.squash.lccsquash.data.remote
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.PlayerRequest
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.PlayerResponse
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.PlayersResponse
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.SuccessResponse
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PlayerApiService {
 
@@ -34,8 +32,24 @@ interface PlayerApiService {
         @Query("name") name: String
     ): SuccessResponse<List<PlayersResponse>>
 
+    @POST(PLAYER_BASE)
+    suspend fun createPlayer(
+        @Body body: PlayerRequest
+    ): SuccessResponse<PlayerResponse>
+
+    @PUT(PLAYER)
+    suspend fun updatePlayer(
+        @Path("id") id: Long,
+        @Body body: PlayerRequest
+    ): SuccessResponse<PlayerResponse>
+
+    @DELETE(PLAYER)
+    suspend fun deletePlayer(
+        @Path("id") id: Long
+    ): SuccessResponse<PlayerResponse>
+
     companion object {
-        private const val PLAYER_BASE = "v1/player"
+        const val PLAYER_BASE = "v1/player"
         const val ALL = "$PLAYER_BASE/all"
         const val PLAYER = "$PLAYER_BASE/{id}"
         const val TOP_30 = "$PLAYER_BASE/top30"

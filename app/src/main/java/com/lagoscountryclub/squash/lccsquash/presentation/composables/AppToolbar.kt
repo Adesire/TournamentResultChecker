@@ -26,7 +26,8 @@ fun AppToolbar(
     showBack: Boolean = false,
     OnTitlePressed: () -> Unit = {},
     OnBackPressed: () -> Unit = {},
-    OnMorePressed: () -> Unit = {}
+    OnMorePressed: () -> Unit = {},
+    OnMoreItemPressed: (item: MenuItem) -> Unit = {}
 ) {
     val menuShowing = remember { mutableStateOf(false) }
     TopAppBar(
@@ -68,15 +69,36 @@ fun AppToolbar(
                     )
                 }
 
-                DropdownMenu(expanded = menuShowing.value, onDismissRequest = { menuShowing.value = false }) {
-                    Text(text = "All Tournaments", modifier = Modifier.clickable {
+                DropdownMenu(
+                    expanded = menuShowing.value,
+                    onDismissRequest = { menuShowing.value = false }) {
+                    MenuItemText(item = MenuItem.AllTournaments) {
                         OnTitlePressed.invoke()
                         menuShowing.value = false
-                    }.padding(8.dp))
+                    }
+                    MenuItemText(item = MenuItem.AdminView) {
+                        OnMoreItemPressed.invoke(it)
+                    }
                 }
             }
         }
     )
+}
+
+@Composable
+fun MenuItemText(item: MenuItem, OnClick: (item: MenuItem) -> Unit) {
+    if (item.isVisible) {
+        Text(
+            text = item.title, modifier = Modifier
+                .clickable(onClick = { OnClick.invoke(item) })
+                .padding(8.dp)
+        )
+    }
+}
+
+sealed class MenuItem(val title: String, val isVisible: Boolean = true) {
+    object AllTournaments : MenuItem("All Tournaments")
+    object AdminView : MenuItem("Admin")
 }
 
 

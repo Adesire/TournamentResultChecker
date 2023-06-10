@@ -14,6 +14,10 @@ open class BaseViewModel : ViewModel() {
     val showError: LiveData<String>
         get() = _showError
 
+    private val _isAdmin = MutableLiveData(false)
+    val isAdmin: LiveData<Boolean>
+        get() = _isAdmin
+
     fun setErrorMessage(message: String) {
         _showError.postValue(message)
         _showLoader.postValue(false)
@@ -21,6 +25,10 @@ open class BaseViewModel : ViewModel() {
 
     fun setLoading(load: Boolean) {
         _showLoader.postValue(load)
+    }
+
+    fun setAdmin(admin: Boolean) {
+        _isAdmin.postValue(admin)
     }
 
     fun startLoading() {

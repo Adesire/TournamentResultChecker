@@ -1,9 +1,12 @@
 package com.lagoscountryclub.squash.lccsquash.data.di.modules
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.AuthApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.GameApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.PlayerApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.TournamentApiService
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.ApiSessionManager
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.Constants.BASE_URL
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.interceptors.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +24,7 @@ import javax.inject.Singleton
 object ApiModule {
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient =
+    fun provideOkhttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -29,6 +32,10 @@ object ApiModule {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            })
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
@@ -55,4 +62,14 @@ object ApiModule {
     @Singleton
     fun provideTournamentApiService(retrofit: Retrofit): TournamentApiService =
         retrofit.create(TournamentApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
+        retrofit.create(AuthApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(sessionManager: ApiSessionManager) =
+        AuthInterceptor(sessionManager)
 }

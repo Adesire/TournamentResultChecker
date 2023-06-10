@@ -1,5 +1,6 @@
 package com.lagoscountryclub.squash.lccsquash.domain.usecases
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.ApiSessionManager
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
 import com.lagoscountryclub.squash.lccsquash.domain.model.Tournament
 import com.lagoscountryclub.squash.lccsquash.domain.repository.PlayerApiRepository
@@ -10,8 +11,9 @@ import javax.inject.Inject
 
 class TournamentUseCase @Inject constructor(
     private val playerApiRepository: PlayerApiRepository,
-    private val tournamentApiRepository: TournamentApiRepository
-) : BaseUseCase() {
+    private val tournamentApiRepository: TournamentApiRepository,
+    sessionManager: ApiSessionManager
+) : BaseUseCase(sessionManager) {
 
     fun getAll(onSuccess: (tournaments: List<Tournament>) -> Unit) =
         flow {
@@ -32,6 +34,6 @@ class TournamentUseCase @Inject constructor(
         }.evaluateOnEach(onSuccess::invoke).flowOn(coroutineContext)
 
     fun getTournament(id: Long?, onSuccess: (tournament: Tournament) -> Unit) = flow {
-        emit(tournamentApiRepository.getTournament(id?:0))
+        emit(tournamentApiRepository.getTournament(id ?: 0))
     }.evaluateOnEach(onSuccess::invoke).flowOn(coroutineContext)
 }

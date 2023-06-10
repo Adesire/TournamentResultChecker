@@ -34,7 +34,7 @@ fun RulesScreen(
 ) {
     viewModel?.getTournament(tournament?.id)
     val rules = if (!showPreview) viewModel!!.tournament else remember {
-        mutableStateOf(dummyTournaments[0])
+        mutableStateOf(com.lagoscountryclub.squash.lccsquash.presentation.screens.dialogs.dummyTournaments[0])
     }
 
     val isRefreshing =

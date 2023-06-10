@@ -4,4 +4,8 @@
     <string name="home">Home</string>
     <string name="rules">Rules</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="close">close</string>
+    <string name="create_player">Create Player</string>
+    <string name="create_tournament">Create Tournament</string>
+    <string name="create_game">Create Game</string>
 </resources>

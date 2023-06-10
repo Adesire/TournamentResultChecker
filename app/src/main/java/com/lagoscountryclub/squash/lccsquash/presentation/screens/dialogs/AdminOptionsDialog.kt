@@ -1,11 +1,12 @@
-package com.lagoscountryclub.squash.lccsquash.presentation.screens
+package com.lagoscountryclub.squash.lccsquash.presentation.screens.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -19,19 +20,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavHostController
 import com.lagoscountryclub.squash.lccsquash.R
-import com.lagoscountryclub.squash.lccsquash.domain.model.Tournament
-import com.lagoscountryclub.squash.lccsquash.presentation.composables.TournamentItem
-import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.TournamentViewModel
+import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.AdminViewModel
 
 @Composable
-fun TournamentDialog(
+fun AdminOptionsDialog(
     showPreview: Boolean = false,
-    viewModel: TournamentViewModel? = null,
-    tournament: (Tournament) -> Unit = {},
+    viewModel: AdminViewModel? = null,
+    navController: NavHostController? = null,
     OnDismiss: () -> Unit = {}
 ) {
-    val tournaments = if (!showPreview) viewModel!!.tournaments else dummyTournaments
 
     Dialog(onDismissRequest = { OnDismiss.invoke() }, DialogProperties()) {
         Column(
@@ -62,13 +61,39 @@ fun TournamentDialog(
                     modifier = Modifier.clickable { OnDismiss.invoke() }
                 )
             }
-            LazyColumn {
-                items(tournaments) { item ->
-                    TournamentItem(item) {
-                        tournament.invoke(it)
-                        OnDismiss.invoke()
-                    }
-                }
+            AdminOptionItem(text = "Create Player") {
+
+            }
+            AdminOptionItem(text = "Create Game") {
+
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun AdminOptionItem(text: String, OnClick: () -> Unit) {
+    Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Card(
+            shape = RoundedCornerShape(8.dp),
+            onClick = { OnClick.invoke() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp),
+            elevation = 2.dp
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -77,16 +102,6 @@ fun TournamentDialog(
 
 @Preview
 @Composable
-fun TournamentDialogPreview() {
-    TournamentDialog(showPreview = true)
+fun AdminOptionsDialogPreview() {
+    AdminOptionsDialog(showPreview = true)
 }
-
-val dummyTournaments = listOf(
-    Tournament(
-        id = 0,
-        name = "Ladder 2021",
-        rules = listOf("thou shalt A", "thou shalt B", "thou shalt not C")
-    ),
-    Tournament(id = 1, name = "Ladder 2022"),
-    Tournament(id = 2, name = "Ladder 2023")
-)

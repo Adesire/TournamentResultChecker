@@ -1,5 +1,7 @@
 package com.lagoscountryclub.squash.lccsquash.domain.converters
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.GameRequest
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.TournamentRequest
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.GameResponse
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.PlayerResponse
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.PlayersResponse
@@ -43,5 +45,26 @@ fun TournamentResponse.toTournament(): Tournament {
         gameCount = this.totalGameCount,
         bestOfCount = this.bestOfCount,
         rules = this.rules
+    )
+}
+
+fun Tournament.toTournamentRequest(): TournamentRequest {
+    return TournamentRequest(
+        name = this.name,
+        tournamentYear = this.year,
+        bestOfCount = this.bestOfCount,
+        rules = this.rules
+    )
+}
+
+fun Game.toGameRequest(tournamentId: Long = 0): GameRequest {
+    return GameRequest(
+        player1Id = this.player1.id,
+        player2Id = this.player2.id,
+        player1Points = this.player1Point,
+        player2Points = this.player2Point,
+        roundRecords = this.record,
+        roundScores = this.scores,
+        tournamentId = tournamentId
     )
 }

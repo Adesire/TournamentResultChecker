@@ -48,6 +48,10 @@ class PlayerViewModel @Inject constructor(private val useCase: PlayerUseCase) : 
         getAllPlayers()
     }
 
+    fun showAdminViews() {
+        setAdmin(!useCase.checkJwtTokenExpired())
+    }
+
     fun getAllPlayers() {
         useCase.getAllPlayers {
             _players.value = it

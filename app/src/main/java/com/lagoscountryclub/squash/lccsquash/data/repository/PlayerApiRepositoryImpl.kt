@@ -4,6 +4,7 @@ import com.lagoscountryclub.squash.lccsquash.data.Resource
 import com.lagoscountryclub.squash.lccsquash.data.remote.PlayerApiService
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.ApiSessionManager
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.makeRepositoryRequest
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.PlayerRequest
 import com.lagoscountryclub.squash.lccsquash.domain.converters.toPlayer
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
 import com.lagoscountryclub.squash.lccsquash.domain.repository.PlayerApiRepository
@@ -35,6 +36,21 @@ class PlayerApiRepositoryImpl @Inject constructor(
     override suspend fun searchPlayers(name: String): Resource<List<Player>> =
         makeRepositoryRequest {
             apiService.searchPlayers(name).data!!.map { it.toPlayer() }
+        }
+
+    override suspend fun createPlayer(body: PlayerRequest): Resource<Player> =
+        makeRepositoryRequest {
+            apiService.createPlayer(body).data!!.toPlayer()
+        }
+
+    override suspend fun updatePlayer(id: Long, body: PlayerRequest): Resource<Player> =
+        makeRepositoryRequest {
+            apiService.updatePlayer(id, body).data!!.toPlayer()
+        }
+
+    override suspend fun deletePlayer(id: Long): Resource<Player> =
+        makeRepositoryRequest {
+            apiService.deletePlayer(id).data!!.toPlayer()
         }
 
 }

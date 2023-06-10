@@ -54,16 +54,14 @@ fun PlayerInfo(game: Game) {
             colour = p1PointsColour
         )
 
-        Column(verticalArrangement = Arrangement.Top) {
-            Text(
-                text = "vs",
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(horizontal = 8.dp)
-            )
-        }
+        Text(
+            text = "vs",
+            style = MaterialTheme.typography.body1,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = 8.dp)
+        )
 
         SinglePlayerDetails(
             name = player2.name,

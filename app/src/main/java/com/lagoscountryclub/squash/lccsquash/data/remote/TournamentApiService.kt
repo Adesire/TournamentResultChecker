@@ -1,11 +1,9 @@
 package com.lagoscountryclub.squash.lccsquash.data.remote
 
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.TournamentRequest
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.SuccessResponse
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.TournamentResponse
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface TournamentApiService {
 
@@ -22,8 +20,24 @@ interface TournamentApiService {
         @Query("name") name: String
     ): SuccessResponse<List<TournamentResponse>>
 
+    @POST(TOURNAMENT_BASE)
+    suspend fun createTournament(
+        @Body body: TournamentRequest
+    ): SuccessResponse<TournamentResponse>
+
+    @PUT(TOURNAMENT)
+    suspend fun updateTournament(
+        @Path("id") id: Long,
+        @Body body: TournamentRequest
+    ): SuccessResponse<TournamentResponse>
+
+    @DELETE(TOURNAMENT)
+    suspend fun deleteTournament(
+        @Path("id") id: Long
+    ): SuccessResponse<TournamentResponse>
+
     companion object {
-        private const val TOURNAMENT_BASE = "v1/tournament"
+        const val TOURNAMENT_BASE = "v1/tournament"
         const val ALL = "$TOURNAMENT_BASE/all"
         const val TOURNAMENT = "$TOURNAMENT_BASE/{id}"
         const val SEARCH = "${TOURNAMENT_BASE}/search"

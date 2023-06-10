@@ -14,6 +14,8 @@ import androidx.navigation.navArgument
 import com.lagoscountryclub.squash.lccsquash.domain.model.Tournament
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.SnackBarComponent
 import com.lagoscountryclub.squash.lccsquash.presentation.screens.*
+import com.lagoscountryclub.squash.lccsquash.presentation.screens.dialogs.TournamentDialog
+import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.BaseViewModel
 import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.PlayerViewModel
 import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.TournamentViewModel
 
@@ -49,10 +51,7 @@ fun MainScreen(
         )
     }
 
-    HandleLoadingAndError(
-        playerViewModel = playerViewModel,
-        tournamentViewModel = tournamentViewModel
-    )
+    HandleLoadingAndError(playerViewModel, tournamentViewModel)
 
     NavHost(navController = navController, startDestination = NavRoutes.HOME) {
         composable(route = NavRoutes.HOME) {
@@ -84,18 +83,27 @@ fun MainScreen(
             val playerId = it.arguments!!.getLong("playerId")
             PlayerDetailsScreen(navController, playerId, playerViewModel)
         }
+
+        composable(
+            route = NavRoutes.LOGIN
+        ) {
+            showToolbar.invoke(false)
+            showBottomNav.invoke(false)
+            LoginScreen(navController)
+        }
     }
 }
 
 @Composable
 fun HandleLoadingAndError(
-    playerViewModel: PlayerViewModel,
-    tournamentViewModel: TournamentViewModel,
-    OnRefreshAction:() -> Unit = {}
+    vararg viewModels: BaseViewModel,
+    OnRefreshAction: () -> Unit = {},
+    showToast: Boolean = false
 ) {
     val loadingMediator = MediatorLiveData<Boolean>().apply {
-        addSource(playerViewModel.showLoader) { value = it }
-        addSource(tournamentViewModel.showLoader) { value = it }
+        for (v in viewModels) {
+            addSource(v.showLoader) { value = it }
+        }
     }
     val loading = loadingMediator.observeAsState(false)
 
@@ -104,16 +112,21 @@ fun HandleLoadingAndError(
     }
 
     val errorMediator = MediatorLiveData<String>().apply {
-        addSource(playerViewModel.showError) { value = it }
-        addSource(tournamentViewModel.showError) { value = it }
+        for (v in viewModels) {
+            addSource(v.showError) { value = it }
+        }
     }
 
     val error = errorMediator.observeAsState(initial = "")
     if (error.value.isNotEmpty()) {
-        SnackBarComponent(error.value) {
-            playerViewModel.setErrorMessage("")
-            tournamentViewModel.setErrorMessage("")
-            OnRefreshAction.invoke()
-        }
+        if(!showToast) {
+            SnackBarComponent(error.value) {
+                for (v in viewModels) {
+                    v.setErrorMessage("")
+                }
+                OnRefreshAction.invoke()
+            }
+        } else
+            com.lagoscountryclub.squash.lccsquash.showToast(text = error.value)
     }
 }

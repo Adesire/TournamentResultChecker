@@ -38,7 +38,7 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
         getAll()
     }
 
-    private fun getAll() {
+    fun getAll() {
         useCase.getAll {
             _tournaments.clear()
             _tournaments.addAll(it)

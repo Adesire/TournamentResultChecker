@@ -1,15 +1,19 @@
 package com.lagoscountryclub.squash.lccsquash.domain.usecases
 
+import com.auth0.android.jwt.JWT
 import com.lagoscountryclub.squash.lccsquash.data.HttpError
 import com.lagoscountryclub.squash.lccsquash.data.NetworkError
 import com.lagoscountryclub.squash.lccsquash.data.Resource
 import com.lagoscountryclub.squash.lccsquash.data.Success
+import com.lagoscountryclub.squash.lccsquash.data.remote.api.ApiSessionManager
+import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import java.util.*
 
-abstract class BaseUseCase {
+abstract class BaseUseCase(private val sessionManager: ApiSessionManager) {
 
     protected val coroutineContext = Dispatchers.IO
     lateinit var onError: (message: String?) -> Unit
@@ -25,7 +29,13 @@ abstract class BaseUseCase {
             is HttpError -> {
                 onLoading.invoke(false)
                 logError("HttpError")
-                onError.invoke(resource.message)
+                val message = resource.message ?: ""
+                if (message.contains("Token Expired")) {
+                    Prefs.clear()
+                    onError.invoke("Please login again")
+                    return
+                }
+                onError.invoke(message)
             }
             is NetworkError -> {
                 onLoading.invoke(false)
@@ -46,4 +56,10 @@ abstract class BaseUseCase {
     protected fun logError(message: String) {
         Timber.e(message)
     }
+
+    fun checkJwtTokenExpired() =
+        sessionManager.token.isNullOrEmpty() || JWT(sessionManager.token!!).expiresAt!!.time <= Date().time
+
+    fun getUser() = sessionManager.userResponse
+
 }

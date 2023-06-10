@@ -1,6 +1,7 @@
 package com.lagoscountryclub.squash.lccsquash
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,11 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.lagoscountryclub.squash.lccsquash.presentation.MainScreen
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.AppToolbar
+import com.lagoscountryclub.squash.lccsquash.presentation.composables.MenuItem
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.bottomnav.BottomNav
+import com.lagoscountryclub.squash.lccsquash.presentation.screens.NavRoutes
 import com.lagoscountryclub.squash.lccsquash.ui.theme.LccSquashTournamentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +49,11 @@ fun MainApp(appTitle: String = "") {
         if (showToolbar.value) {
             AppToolbar(title = title.value, OnTitlePressed = {
                 onTitlePressed.value = true
+            }, OnMoreItemPressed = {
+                when (it) {
+                    MenuItem.AdminView -> navController.navigate(NavRoutes.LOGIN)
+                    MenuItem.AllTournaments -> {}
+                }
             })
         }
     }, bottomBar = {
@@ -70,6 +79,11 @@ fun MainApp(appTitle: String = "") {
                 })
         }
     }
+}
+
+@Composable
+fun showToast(text: String) {
+    Toast.makeText(LocalContext.current, text, Toast.LENGTH_LONG).show()
 }
 
 @Preview(showBackground = true)
