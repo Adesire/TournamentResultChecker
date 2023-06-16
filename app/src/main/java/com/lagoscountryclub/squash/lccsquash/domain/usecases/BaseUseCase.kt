@@ -53,6 +53,10 @@ abstract class BaseUseCase(private val sessionManager: ApiSessionManager) {
         }
     }
 
+    fun startLoading() {
+        onLoading.invoke(true)
+    }
+
     protected fun logError(message: String) {
         Timber.e(message)
     }

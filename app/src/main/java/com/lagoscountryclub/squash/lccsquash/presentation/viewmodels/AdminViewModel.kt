@@ -1,6 +1,7 @@
 package com.lagoscountryclub.squash.lccsquash.presentation.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.request.LoginRequest
 import com.lagoscountryclub.squash.lccsquash.data.remote.api.response.UserResponse
@@ -62,18 +63,10 @@ class AdminViewModel @Inject constructor(private val useCase: AdminUseCase) : Ba
     }
 
     fun updateTournamentName(name: String) {
-        if (name.isEmpty() || name.length < 3) {
-            setErrorMessage("Tournament name must be at greater than 3 characters")
-            return
-        }
         _tournament.value = tournament.copy(name = name)
     }
 
     fun updateTournamentYear(year: String) {
-        if (year.isEmpty() || year.length <= 3) {
-            setErrorMessage("Tournament year must be at greater than 3 characters")
-            return
-        }
         _tournament.value = tournament.copy(year = year)
     }
 
@@ -128,6 +121,21 @@ class AdminViewModel @Inject constructor(private val useCase: AdminUseCase) : Ba
     }
 
     fun createTournament() {
+        val name = tournament.name
+        if (name.isEmpty() || name.length < 3) {
+            setErrorMessage("Tournament name must be at greater than 3 characters")
+            return
+        }
+
+        val year = tournament.year
+        if (year.isEmpty() || year.length <= 3) {
+            setErrorMessage("Tournament year must be at greater than 3 characters")
+            return
+        }
+        if (!year.isDigitsOnly()) {
+            setErrorMessage("Tournament year must be digits only")
+            return
+        }
         if (tournament.bestOfCount !in listOf(3, 5, 7)) {
             setErrorMessage("Invalid Best of count")
             return

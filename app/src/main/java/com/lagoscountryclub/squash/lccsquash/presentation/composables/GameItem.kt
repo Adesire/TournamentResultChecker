@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lagoscountryclub.squash.lccsquash.domain.model.Game
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
+import com.lagoscountryclub.squash.lccsquash.ui.theme.AccentColour
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -19,7 +20,8 @@ fun GameItem(game: Game, OnClick: (game: Game) -> Unit = {}) {
     Card(
         onClick = { OnClick.invoke(game) },
         modifier = Modifier
-            .wrapContentSize()
+            .fillMaxWidth()
+            .height(100.dp)
             .padding(12.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = 2.dp,
@@ -27,10 +29,11 @@ fun GameItem(game: Game, OnClick: (game: Game) -> Unit = {}) {
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             PlayerInfo(game)
-            ScoreInfo(game.scores)
+//            ScoreInfo(game.scores)
         }
     }
 }
@@ -51,7 +54,8 @@ fun PlayerInfo(game: Game) {
         SinglePlayerDetails(
             name = player1.name,
             points = game.player1Point,
-            colour = p1PointsColour
+            colour = p1PointsColour,
+            isPLayer1 = true
         )
 
         Text(
@@ -66,30 +70,39 @@ fun PlayerInfo(game: Game) {
         SinglePlayerDetails(
             name = player2.name,
             points = game.player2Point,
-            colour = p2PointsColour
+            colour = p2PointsColour,
+            isPLayer1 = false
         )
     }
 }
 
 @Composable
-fun SinglePlayerDetails(name: String, points: Int, colour: Color) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.body1,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.wrapContentSize()
-        )
-        Text(
-            text = points.toString(),
-            style = MaterialTheme.typography.body1,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.wrapContentSize(),
-            color = colour
-        )
+fun SinglePlayerDetails(name: String, points: Int, colour: Color, isPLayer1: Boolean) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        if (isPLayer1) {
+            ProfileImage(size = 50.dp, borderColour = Color.Blue)
+        }
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = name,
+                style = MaterialTheme.typography.body1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.wrapContentSize()
+            )
+            Text(
+                text = points.toString(),
+                style = MaterialTheme.typography.body1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.wrapContentSize(),
+                color = colour
+            )
+        }
+        if (!isPLayer1) {
+            ProfileImage(size = 50.dp, borderColour = AccentColour)
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -25,7 +26,8 @@ fun AppTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     val input = remember {
         mutableStateOf(text)
@@ -48,7 +50,8 @@ fun AppTextField(
         },
         trailingIcon = trailingIcon,
         textStyle = TextStyle(fontSize = textSize),
-        enabled = enabled
+        enabled = enabled,
+        visualTransformation = visualTransformation
     )
 }
 

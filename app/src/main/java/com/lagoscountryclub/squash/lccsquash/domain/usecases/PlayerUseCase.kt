@@ -15,18 +15,21 @@ class PlayerUseCase @Inject constructor(
     sessionManager: ApiSessionManager
 ) : BaseUseCase(sessionManager) {
     fun getAllPlayers(onSuccess: (players: List<Player>) -> Unit) = flow {
+        startLoading()
         emit(playerApiRepository.getAllPlayers())
     }.evaluateOnEach {
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
     fun getPlayer(id: Long, tournament: Long?, onSuccess: (players: Player) -> Unit) = flow {
+        startLoading()
         emit(playerApiRepository.getPlayer(id, tournament))
     }.evaluateOnEach {
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
     fun getPlayerGame(id: Long, tournament: Long, onSuccess: (game: Game) -> Unit) = flow {
+        startLoading()
         emit(gameRepository.getGame(id, tournament))
     }.evaluateOnEach {
         onSuccess.invoke(it)

@@ -44,7 +44,8 @@ fun TournamentResponse.toTournament(): Tournament {
         year = this.year,
         gameCount = this.totalGameCount,
         bestOfCount = this.bestOfCount,
-        rules = this.rules
+        rules = this.rules,
+        rulesContent = this.rulesContent?:""
     )
 }
 
@@ -53,7 +54,8 @@ fun Tournament.toTournamentRequest(): TournamentRequest {
         name = this.name,
         tournamentYear = this.year,
         bestOfCount = this.bestOfCount,
-        rules = this.rules
+        rules = this.rules,
+        rulesContent = this.rulesContent
     )
 }
 

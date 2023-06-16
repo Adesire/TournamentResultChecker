@@ -1,5 +1,6 @@
 package com.lagoscountryclub.squash.lccsquash.presentation.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lagoscountryclub.squash.lccsquash.domain.model.Game
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
+import com.lagoscountryclub.squash.lccsquash.presentation.HandleLoadingAndError
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.GameItem
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.ProfileImage
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.SwipeRefreshComponent
@@ -32,12 +35,13 @@ fun PlayerDetailsScreen(
     viewModel: PlayerViewModel? = null,
     showPreview: Boolean = false
 ) {
-    if (!showPreview) {
-        viewModel?.getPlayer(playerId)
-    }
     val player = if (!showPreview) viewModel!!.player.value else dummyPlayers[0]
     val isRefreshing =
         if (showPreview) false else viewModel!!.showLoader.observeAsState(false).value
+
+    LaunchedEffect(key1 = 1) {
+        viewModel?.getPlayer(playerId)
+    }
 
     SwipeRefreshComponent(
         showPreview = showPreview,
@@ -57,6 +61,9 @@ fun PlayerDetailsScreen(
             }
         }
     }
+    if (!showPreview) {
+        HandleLoadingAndError(viewModels = arrayOf(viewModel!!), showToast = true)
+    }
 
 }
 
@@ -72,7 +79,7 @@ fun Header(navController: NavController?, player: Player) {
             )
         }
     }
-    ProfileImage(160.dp)
+    ProfileImage(size = 160.dp)
     Text(
         text = player.name,
         style = MaterialTheme.typography.h4,

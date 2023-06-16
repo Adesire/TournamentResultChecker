@@ -6,6 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,6 +14,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.lagoscountryclub.squash.lccsquash.ui.theme.AccentColour
 
 @Composable
 fun BottomNav(navController: NavHostController? = null) {
@@ -28,6 +30,8 @@ fun BottomNav(navController: NavHostController? = null) {
                         contentDescription = stringResource(screen.title)
                     )
                 },
+                selectedContentColor = AccentColour,
+                unselectedContentColor = Color.White,
                 label = { Text(stringResource(screen.title)) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {

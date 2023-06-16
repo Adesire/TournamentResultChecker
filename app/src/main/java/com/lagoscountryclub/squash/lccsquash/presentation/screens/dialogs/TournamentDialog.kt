@@ -67,12 +67,14 @@ fun TournamentDialog(
                 items(tournaments) { item ->
                     TournamentItem(item) {
                         tournament.invoke(it)
+                        viewModel?.updateTournament(it)
                         OnDismiss.invoke()
                     }
                 }
             }
         }
     }
+    
 }
 
 

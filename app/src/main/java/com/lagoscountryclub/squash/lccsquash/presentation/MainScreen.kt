@@ -35,7 +35,11 @@ fun MainScreen(
     val showDialog = remember {
         onTitlePressed
     }
-    var t: Tournament? = null
+    var t: Tournament = tournamentViewModel.tournament.value
+    if (t.name.isNotEmpty()) {
+        playerViewModel.selectedTournament(t)
+        tournament.invoke(t)
+    }
 
     if (showDialog.value) {
         TournamentDialog(
@@ -63,7 +67,7 @@ fun MainScreen(
         composable(route = NavRoutes.LEADERBOARD) {
             showToolbar.invoke(false)
             showBottomNav.invoke(true)
-            LeaderboardScreen(navController, tournamentViewModel)
+            LeaderboardScreen(navController, tournamentViewModel, playerViewModel)
         }
 
         composable(route = NavRoutes.RULES) {
@@ -106,7 +110,6 @@ fun HandleLoadingAndError(
         }
     }
     val loading = loadingMediator.observeAsState(false)
-
     if (loading.value) {
         LoadingIndicator()
     }
@@ -119,7 +122,7 @@ fun HandleLoadingAndError(
 
     val error = errorMediator.observeAsState(initial = "")
     if (error.value.isNotEmpty()) {
-        if(!showToast) {
+        if (!showToast) {
             SnackBarComponent(error.value) {
                 for (v in viewModels) {
                     v.setErrorMessage("")

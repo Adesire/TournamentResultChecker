@@ -22,28 +22,32 @@ class AdminUseCase @Inject constructor(
     private val playerApiRepository: PlayerApiRepository,
     private val gameRepository: GameApiRepository,
     private val tournamentApiRepository: TournamentApiRepository,
-    private val sessionManager: ApiSessionManager
+    sessionManager: ApiSessionManager
 ) : BaseUseCase(sessionManager) {
 
     fun login(loginRequest: LoginRequest, onSuccess: (user: UserResponse) -> Unit) = flow {
+        startLoading()
         emit(authApiRepository.login(loginRequest))
     }.evaluateOnEach {
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
     fun createPlayer(name: String, onSuccess: (player: Player) -> Unit) = flow {
+        startLoading()
         emit(playerApiRepository.createPlayer(PlayerRequest(name)))
     }.evaluateOnEach {
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
     fun createTournament(tournament: Tournament, onSuccess: (Tournament) -> Unit) = flow {
+        startLoading()
         emit(tournamentApiRepository.createTournament(tournament.toTournamentRequest()))
     }.evaluateOnEach {
         onSuccess.invoke(it)
     }.flowOn(coroutineContext)
 
     fun createGame(game: Game, onSuccess: (game: Game) -> Unit) = flow {
+        startLoading()
         emit(gameRepository.createGame(game.toGameRequest()))
     }.evaluateOnEach {
         onSuccess.invoke(it)

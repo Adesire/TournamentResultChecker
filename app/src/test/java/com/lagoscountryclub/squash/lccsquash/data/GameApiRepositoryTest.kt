@@ -8,9 +8,9 @@ import com.lagoscountryclub.squash.lccsquash.data.repository.GameApiRepositoryIm
 import com.lagoscountryclub.squash.lccsquash.domain.converters.toGame
 import com.lagoscountryclub.squash.lccsquash.domain.model.Game
 import com.lagoscountryclub.squash.lccsquash.utils.BaseUnitTest
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -36,12 +36,12 @@ class GameApiRepositoryTest : BaseUnitTest() {
     @Test
     fun verifyAllGamesCalled() = runTest {
         repository.getAllGames(tournamentId)
-        verify(exactly = 1) { service.getAllGames(tournamentId) }
+        coVerify(exactly = 1) { service.getAllGames(tournamentId) }
     }
 
     @Test
     fun testGetAllGames() = runTest {
-        every { service.getAllGames(tournamentId) } returns gamesResponses
+        coEvery { service.getAllGames(tournamentId) } returns gamesResponses
 
         val response = repository.getAllGames(tournamentId)
         assertEquals(Success(games), response)
@@ -50,12 +50,12 @@ class GameApiRepositoryTest : BaseUnitTest() {
     @Test
     fun verifyGetGameCalled() = runTest {
         repository.getGame(gameId, tournamentId)
-        verify(exactly = 1) { service.getAGame(gameId, tournamentId) }
+        coVerify(exactly = 1) { service.getAGame(gameId, tournamentId) }
     }
 
     @Test
     fun testGetGame() = runTest {
-        every {
+        coEvery {
             service.getAGame(
                 gameId,
                 tournamentId

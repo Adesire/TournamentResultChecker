@@ -107,5 +107,13 @@ dependencies {
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
     //Speed Dial FAB
     implementation("com.leinardi.android:speed-dial.compose:1.0.0-alpha04")
+    //Lottie
+    implementation("com.airbnb.android:lottie-compose:6.0.1")
+    //WYSIWYG editor
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:0.2.0")
+    //Permissions
+    implementation("com.karumi:dexter:6.2.3")
+    //Cropper
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
 
 }

@@ -9,6 +9,7 @@ import com.lagoscountryclub.squash.lccsquash.domain.model.Tournament
 import com.lagoscountryclub.squash.lccsquash.domain.usecases.TournamentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,10 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
     val players: List<Player>
         get() = _players
 
+    private val _updateDone = mutableStateOf(false)
+    val updateDone: State<Boolean>
+        get() = _updateDone
+
     init {
         useCase.onLoading = ::setLoading
 
@@ -36,6 +41,22 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
             }
         }
         getAll()
+
+        if (tournament.value.id == -1L) {
+            getTournament()//getLatestTournament on first-intialization
+        }
+    }
+
+    fun updateTournament(tournament: Tournament) {
+        _tournament.value = tournament
+    }
+
+    fun updateRulesContent(content: String) {
+        _tournament.value = tournament.value.copy(rulesContent = content)
+    }
+
+    fun resetUpdate() {
+        _updateDone.value = false
     }
 
     fun getAll() {
@@ -51,10 +72,25 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
         }.launchIn(viewModelScope)
     }
 
-    fun getTop30(id: Long? = null) {
+    fun getTop30() {
+        val t = tournament.value
+        val id = if (t.id != -1L) t.id else 0
         useCase.getTop30Players(id) {
             _players.clear()
             _players.addAll(it)
         }.launchIn(viewModelScope)
+    }
+
+    fun updateTournament() {
+        val t = tournament.value
+        Timber.e(t.toString())
+        useCase.updateTournament(t) {
+            updateTournament(it)
+            _updateDone.value = true
+        }.launchIn(viewModelScope)
+    }
+
+    fun showAdminViews() {
+        setAdmin(!useCase.checkJwtTokenExpired())
     }
 }

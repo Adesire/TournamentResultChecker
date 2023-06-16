@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.lagoscountryclub.squash.lccsquash.R.*
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
+import com.lagoscountryclub.squash.lccsquash.presentation.HandleLoadingAndError
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.PlayerItem
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.SearchComponent
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.SwipeRefreshComponent
@@ -76,6 +77,10 @@ fun PlayersScreen(
             },
         )
 
+        if (!showPreview) {
+            HandleLoadingAndError(viewModels = arrayOf(viewModel!!), showToast = true)
+        }
+
         Column(
             modifier = Modifier
                 .pullRefresh(pullRefreshState)
@@ -85,6 +90,7 @@ fun PlayersScreen(
             LazyColumn {
                 items(players) {
                     PlayerItem(player = it) { player ->
+                        viewModel?.resetPlayer()
                         navController?.navigate(
                             NavRoutes.PLAYER_DETAILS.replace(
                                 "{playerId}",

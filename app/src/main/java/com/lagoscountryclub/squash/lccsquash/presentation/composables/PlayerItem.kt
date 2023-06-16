@@ -12,6 +12,7 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +42,9 @@ fun PlayerItem(
             elevation = 4.dp
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -81,21 +84,32 @@ fun PlayerItem(
                     style = MaterialTheme.typography.body1,
                     textAlign = TextAlign.Center
                 )
+                if (isLeaderboard) {
+                    val suffix = "(Point${if (player.points == 1) "" else "s"})"
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 24.dp),
+                        text = "${player.points} $suffix",
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun ProfileImage(size: Dp = 40.dp) {
+fun ProfileImage(modifier: Modifier = Modifier, size: Dp = 40.dp, borderColour: Color = PrimaryColour) {
     Image(
         imageVector = Icons.Rounded.Person,
         contentDescription = stringResource(R.string.person_icon),
         colorFilter = ColorFilter.tint(color = PersonIconTint),
-        modifier = Modifier
+        modifier = modifier
             .padding(4.dp)
             .border(
-                border = BorderStroke(2.dp, Purple200),
+                border = BorderStroke(2.dp, borderColour),
                 shape = CircleShape
             )
             .size(size)

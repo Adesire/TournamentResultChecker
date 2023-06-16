@@ -14,9 +14,9 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = PrimaryColour,
+    primaryVariant = DarkPrimaryColour,
+    secondary = AccentColour
 
     /* Other default colors to override
     background = Color.White,
@@ -34,8 +34,10 @@ fun LccSquashTournamentTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        PersonIconTint = Color.White
-        DarkColorPalette
+        /*PersonIconTint = Color.White
+        DarkColorPalette*/
+        PersonIconTint = Color.Black
+        LightColorPalette
     } else {
         PersonIconTint = Color.Black
         LightColorPalette

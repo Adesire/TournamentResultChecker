@@ -79,4 +79,8 @@ class PlayerViewModel @Inject constructor(private val useCase: PlayerUseCase) : 
         _tournament.value = tournament
     }
 
+    fun resetPlayer() {
+        _player.value = Player()
+    }
+
 }

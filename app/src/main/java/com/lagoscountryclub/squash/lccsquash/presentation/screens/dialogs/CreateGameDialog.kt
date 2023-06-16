@@ -101,7 +101,7 @@ fun CreateGameDialog(
                 points = viewModel.game.player2Point.toString()
             )
 
-            ScoreInformation(viewModel = viewModel)
+//            ScoreInformation(viewModel = viewModel)
 
             AppButton(modifier = Modifier, text = "Create") {
                 viewModel.createGame()
@@ -174,12 +174,11 @@ fun ScoreInformation(bestOfCount: Int = 3, viewModel: AdminViewModel?) {
     Text(
         text = "Round Records",
         style = MaterialTheme.typography.subtitle1,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Start,
         modifier = Modifier
-            .wrapContentSize()
-            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 8.dp)
     )
-    var count = 0
 
     rounds!!.forEachIndexed { index, round ->
         Row(

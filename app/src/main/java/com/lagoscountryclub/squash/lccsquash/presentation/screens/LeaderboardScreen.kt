@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,9 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lagoscountryclub.squash.lccsquash.domain.model.Player
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.PlayerItem
 import com.lagoscountryclub.squash.lccsquash.presentation.composables.SwipeRefreshComponent
+import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.PlayerViewModel
 import com.lagoscountryclub.squash.lccsquash.presentation.viewmodels.TournamentViewModel
 import com.lagoscountryclub.squash.lccsquash.ui.theme.Bronze
 import com.lagoscountryclub.squash.lccsquash.ui.theme.Gold
@@ -32,9 +39,14 @@ import com.lagoscountryclub.squash.lccsquash.ui.theme.Silver
 fun LeaderboardScreen(
     navController: NavHostController? = null,
     viewModel: TournamentViewModel? = null,
+    playerViewModel: PlayerViewModel? = null,
     showPreview: Boolean = false
 ) {
-    viewModel?.getTop30()
+
+    LaunchedEffect(key1 = 1) {
+        viewModel?.getTop30()
+    }
+
     val players = if (!showPreview) viewModel!!.players else dummyLeaders
 
     val isRefreshing =
@@ -50,8 +62,12 @@ fun LeaderboardScreen(
                 item {
                     LeaderboardHeader()
                 }
+                if (players.isEmpty()) {
+                    item { NoLeaderYet() }
+                }
                 itemsIndexed(players) { index, item ->
                     PlayerItem(player = item, isLeaderboard = true, position = index) { player ->
+                        playerViewModel?.resetPlayer()
                         navController?.navigate(
                             NavRoutes.PLAYER_DETAILS.replace(
                                 "{playerId}",
@@ -100,6 +116,23 @@ fun Podium(color: Color, podiumHeight: Dp) {
             modifier = Modifier
                 .size(42.dp),
             colorFilter = ColorFilter.tint(color)
+        )
+    }
+}
+
+@Composable
+fun NoLeaderYet() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 100.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(com.lagoscountryclub.squash.lccsquash.R.raw.no_leader))
+        LottieAnimation(
+            modifier = Modifier.size(240.dp),
+            composition = composition,
+            iterations = LottieConstants.IterateForever
         )
     }
 }
