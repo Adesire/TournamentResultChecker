@@ -1,5 +1,6 @@
 package com.lagoscountryclub.squash.lccsquash.presentation.viewmodels
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,10 @@ class AdminViewModel @Inject constructor(private val useCase: AdminUseCase) : Ba
     private val _rounds = mutableListOf<RoundData>()
     val rounds: List<RoundData>
         get() = _rounds
+
+    private val _createDone = mutableStateOf(false)
+    val createDone: State<Boolean>
+        get() = _createDone
 
 
     init {
@@ -142,6 +147,7 @@ class AdminViewModel @Inject constructor(private val useCase: AdminUseCase) : Ba
         }
         useCase.createTournament(tournament) {
             _tournament.value = it
+            _createDone.value  = true
         }.launchIn(viewModelScope)
     }
 
@@ -174,6 +180,10 @@ class AdminViewModel @Inject constructor(private val useCase: AdminUseCase) : Ba
     fun resetCreatedGame() {
         _game.value = Game()
         _rounds.clear()
+    }
+
+    fun resetCreate() {
+        _createDone.value = false
     }
 
 }
