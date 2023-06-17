@@ -43,7 +43,6 @@ fun CreateTournamentDialog(
     if (!showPreview && viewModel!!.createDone.value) {
         OnDismiss.invoke()
         viewModel.resetCreate()
-        viewModel.resetCreatedTournament()
     }
     if (!showPreview && viewModel!!.tournament.id != -1L) {
         viewModel.resetCreatedTournament()

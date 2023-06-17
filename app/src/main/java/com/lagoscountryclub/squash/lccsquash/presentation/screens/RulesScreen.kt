@@ -1,6 +1,8 @@
 package com.lagoscountryclub.squash.lccsquash.presentation.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -59,7 +61,7 @@ fun RulesScreen(
     SwipeRefreshComponent(
         showPreview = showPreview,
         isRefreshing = isRefreshing,
-        OnRefresh = { viewModel?.getTop30() }) { pullRefreshState ->
+        OnRefresh = { viewModel?.getTournament(tournament?.id) }) { pullRefreshState ->
 
         Column(modifier = Modifier.pullRefresh(pullRefreshState)) {
             if (showAdminActions) {
@@ -73,7 +75,9 @@ fun RulesScreen(
                 )
             }
             RichTextEditor(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 value = richTextValue.value,
                 enabled = showAdminActions,
                 onValueChange = {

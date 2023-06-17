@@ -43,7 +43,7 @@ class TournamentViewModel @Inject constructor(private val useCase: TournamentUse
         getAll()
 
         if (tournament.value.id == -1L) {
-            getTournament()//getLatestTournament on first-intialization
+            getTournament()//getLatestTournament on first-initialization
         }
     }
 
