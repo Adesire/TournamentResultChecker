@@ -32,5 +32,7 @@ local.properties
 /app/src/main/res/mipmap-xhdpi/ic_launcher_logo_round.png
 /app/src/main/res/mipmap-xxhdpi/ic_launcher_logo_round.png
 /app/src/main/res/values/ic_launcher_logo_background.xml
-/app/src/main/res/drawable/logo.png
+/app/src/main/res/drawable/logo.jpg
 /app/src/main/ic_launcher_logo-playstore.png
+/squash_lcc
+/keystore.properties

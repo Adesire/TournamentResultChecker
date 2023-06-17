@@ -90,6 +90,13 @@ fun LeaderboardHeader() {
             .padding(top = 48.dp),
         contentAlignment = Alignment.Center
     ) {
+
+        /*val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(com.lagoscountryclub.squash.lccsquash.R.raw.leader_board))
+        LottieAnimation(
+            modifier = Modifier.size(240.dp),
+            composition = composition
+        )*/
+
         Row(verticalAlignment = Alignment.Bottom) {
             Podium(color = Bronze, podiumHeight = 50.dp)
             Podium(color = Gold, podiumHeight = 100.dp)
