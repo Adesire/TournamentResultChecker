@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,9 +51,11 @@ fun PlayersScreen(
     var players = if (!showPreview) viewModel!!.players else dummyPlayers
     val search = remember { mutableStateOf("") }
 
-    if (players.isEmpty()) {
+
+    LaunchedEffect(key1 = 1) {
         viewModel?.getAllPlayers()
     }
+    
     viewModel?.showAdminViews()
 
     if (search.value.isNotEmpty()) {
