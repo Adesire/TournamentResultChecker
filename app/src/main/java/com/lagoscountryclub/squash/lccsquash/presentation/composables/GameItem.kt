@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lagoscountryclub.squash.lccsquash.domain.model.Game
@@ -90,7 +91,9 @@ fun SinglePlayerDetails(name: String, points: Int, colour: Color, isPLayer1: Boo
                 text = name,
                 style = MaterialTheme.typography.body1,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.wrapContentSize()
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                modifier = Modifier.width(75.dp)
             )
             Text(
                 text = points.toString(),
